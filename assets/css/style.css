@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+    input[type='number'] {
+        -webkit-appearance: none;
+        margin: 0;
+        -moz-appearance: textfield !important;
+    }
+}
+
+.title-container {
+    @apply py-4 flex text-white bg-gradient-to-r from-gray-800 to-gray-600 leading-10 md:text-4xl text-2xl h-16 mb-4;
+}
+
+.main-box-container {
+    @apply grid grid-cols-1 gap-4 place-items-center h-screen;
+}
+
+.content-container {
+    @apply flex justify-center p-6 bg-white shadow-lg rounded-lg
+}
