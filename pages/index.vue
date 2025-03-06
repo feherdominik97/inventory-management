@@ -2,25 +2,36 @@
 import { onMounted, ref } from "vue"
 import { Plus, Minus, Pencil, CheckCheck } from "lucide-vue-next"
 import { useItemStore } from "~/stores/items.js"
+import { usePatchItem } from "~/composables/usePatchItem.js"
 
 const itemStore = useItemStore()
 const items = ref([])
 const lastUpdated = ref(Date.now())
+const timeout = 5000
+const patchItem = usePatchItem()
+const modalTitle = "Conflict!"
+const modalMessage = "Your data was not up to date when you attempted a request. Do you wish to proceed anyway?"
+const modalOk = "Proceed"
+const modalCancel = "Cancel"
+let oldValues = {}
 
-const toggleEdit = async (item) => {
+const toggleEdit = async (item, key) => {
   if(item.editing) {
-    const response = await $fetch(`/api/items/${item.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ quantity: item.quantity })
-    })
-
-    console.log('Success')
+    try {
+      await usePatchItem().patch(item)
+    } catch (e) {
+      item.showMessage =  true
+    }
+  } else {
+    oldValues[key] = item.quantity
   }
 
   item.editing = !item.editing
+}
+const update = async (item, force) => {
+  const patched = await patchItem.patch(item, force)
+
+  item.last_updated = patched.last_updated
 }
 const increase = (item) => {
   item.quantity++
@@ -29,10 +40,18 @@ const decrease = (item) => {
   if(item.quantity > 0)
     item.quantity--
 }
+const closeModal = (item) => {
+  item.showMessage = false
+}
+const proceed = async (item) => {
+  closeModal(item)
+  await update(item, true)
+}
 
 onMounted(async () => {
   await itemStore.fetchItems()
   items.value = itemStore.items
+  await patchItem.periodicPatch(timeout)
 })
 
 </script>
@@ -64,9 +83,17 @@ onMounted(async () => {
                   button(:disabled="!item.editing" @click="increase(item)")
                     Plus
               td
-                button.command(@click="toggleEdit(item)")
+                button.command(@click="toggleEdit(item, key)")
                   CheckCheck(v-if="item.editing")
                   Pencil(v-else)
+              Message(
+                v-if="item.showMessage"
+                :title="modalTitle"
+                :message="modalMessage"
+                :cancel-button-text="modalCancel"
+                :ok-button-text="modalOk"
+                @ok="proceed(item)"
+                @cancel="closeModal(item)")
 
 </template>
 <style>
@@ -77,7 +104,7 @@ onMounted(async () => {
   @apply p-6
 }
 .last-updated > div{
-  @apply shadow-lg p-2 bg-gray-50 text-xs
+  @apply shadow-lg p-2 bg-gray-50 text-xs rounded-lg
 }
 img {
   @apply max-w-full object-contain

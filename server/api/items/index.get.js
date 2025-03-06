@@ -8,8 +8,7 @@ export default defineEventHandler(async (event) => {
     return new Promise((resolve, reject) => {
         db.all("SELECT * FROM items", [], (err, rows) => {
             if (err) {
-                console.error("Error fetching items:", err)
-                reject({ status: 500, message: "Error fetching items" })
+                reject({ status: 500, statusMessage: "Error fetching items" })
             }
             resolve(rows)
         })

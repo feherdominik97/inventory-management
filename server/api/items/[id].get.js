@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
         const { id } = event.context.params
 
         if(!Number.isInteger(parseInt(id)))
-            reject({ statusCode: 500, message: 'Error fetching item' })
+            reject({ statusCode: 500, statusMessage: 'Error fetching item' })
 
         db.get('SELECT * FROM items WHERE id = ?', [id], (err, row) => {
             if (err) {
-                reject({ statusCode: 500, message: 'Error fetching item' })
+                reject({ statusCode: 500, statusMessage: 'Error fetching item' })
             }
             if (!row) {
-                reject({ statusCode: 404, message: 'Item not found' })
+                reject({ statusCode: 404, statusMessage: 'Item not found' })
             }
             resolve(row)
         })

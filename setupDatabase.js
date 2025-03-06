@@ -37,11 +37,13 @@ const items = [
 ]
 
 db.serialize(() => {
+    db.run(`DROP TABLE IF EXISTS items`)
     db.run(`CREATE TABLE IF NOT EXISTS items (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     image_url TEXT NOT NULL,
-    quantity INTEGER NOT NULL
+    quantity INTEGER NOT NULL,
+    last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
   )`)
 
     const stmt = db.prepare('INSERT OR REPLACE INTO items (id, name, image_url, quantity) VALUES (?, ?, ?, ?)')
