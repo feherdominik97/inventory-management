@@ -45,6 +45,7 @@ Inventory manager with optimistic updates.
 - Instead of a modal maybe there could be just a force button at the end of the row. (?)
 - Refreshing the data automatically in periods.
 - Tests.
+- Documentation.
 
 
 
