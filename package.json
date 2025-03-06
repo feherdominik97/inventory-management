@@ -12,9 +12,12 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@pinia/nuxt": "^0.10.1",
+    "h3": "^1.15.1",
     "lucide-vue-next": "^0.477.0",
     "nuxt": "^3.15.4",
+    "nuxt-time": "^1.0.3",
     "pinia": "^3.0.1",
+    "sqlite3": "^5.1.7",
     "vue": "^3.5.13",
     "vue-pug-plugin": "^2.0.3",
     "vue-router": "^4.5.0"
