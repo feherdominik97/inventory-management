@@ -46,6 +46,7 @@ Inventory manager with optimistic updates.
 - Refreshing the data automatically in periods.
 - Tests.
 - Documentation.
+- Responsive UI.
 
 
 
