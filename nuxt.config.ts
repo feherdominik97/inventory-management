@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // @ts-ignore
+// @ts-ignore
 export default defineNuxtConfig({
   app: {
     head: {
@@ -15,4 +16,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', 'nuxt-time'],
   css: ['~/assets/css/style.css'],
+  runtimeConfig: {
+    public: {
+      timeoutFetch: 20000,
+      timeoutUpdate: 5000
+    }
+  }
 })

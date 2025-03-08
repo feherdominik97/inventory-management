@@ -30,6 +30,7 @@ Inventory manager with optimistic updates.
 - I was considering TypeScript and JavaScript as the script language, but I went with JS, because it was a more comfortable solution for an interview task.
 - After I created the database and the REST API for the task, I wrote all the functions as it was a pessimistic solution.
 - Then I kind of converted it into the optimistic update.
+- I chose 20 seconds to refresh. This way the optimistic update is testable manually and the person testing the project don't have to wait for too long for every refresh, but it is configurable, so it can be changed to the preferred value.
 
 ### Pros of solution:
 
@@ -43,10 +44,11 @@ Inventory manager with optimistic updates.
 ### Possible improvements:
 
 - Instead of a modal maybe there could be just a force button at the end of the row. (?)
-- Refreshing the data automatically in periods.
 - Tests.
 - Documentation.
 - Responsive UI.
 
+### Tips:
 
+- For testing optimistic update change the quantity for the second element of the table. That is the only row that is updated every 5 seconds.
 

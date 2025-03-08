@@ -7,7 +7,8 @@ import { usePatchItem } from "~/composables/usePatchItem.js"
 const itemStore = useItemStore()
 const items = ref([])
 const lastUpdated = ref(Date.now())
-const timeout = 5000
+const updateTimeout = useRuntimeConfig().public.timeoutUpdate
+const fetchTimeout = useRuntimeConfig().public.timeoutFetch
 const patchItem = usePatchItem()
 const modalTitle = "Conflict!"
 const modalMessage = "Your data was not up to date when you attempted a request. Do you wish to proceed anyway?"
@@ -17,10 +18,12 @@ let oldValues = {}
 
 const toggleEdit = async (item, key) => {
   if(item.editing) {
-    try {
-      await usePatchItem().patch(item)
-    } catch (e) {
-      item.showMessage =  true
+    if (oldValues[key] !== item.quantity) {
+      try {
+        await usePatchItem().patch(item)
+      } catch (e) {
+        item.showMessage =  true
+      }
     }
   } else {
     oldValues[key] = item.quantity
@@ -48,10 +51,18 @@ const proceed = async (item) => {
   await update(item, true)
 }
 
-onMounted(async () => {
+const setItemsAfterFetch = async () => {
   await itemStore.fetchItems()
+
   items.value = itemStore.items
-  await patchItem.periodicPatch(timeout)
+}
+
+onMounted(async () => {
+  await setItemsAfterFetch()
+  setInterval(async ()=> {
+    await setItemsAfterFetch()
+  }, fetchTimeout)
+  await patchItem.periodicPatch(updateTimeout)
 })
 
 </script>
