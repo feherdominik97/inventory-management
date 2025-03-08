@@ -16,6 +16,13 @@ const modalOk = "Proceed"
 const modalCancel = "Cancel"
 let oldValues = {}
 
+/**If the item was in process of editing (the edit button was clicked) and there was a change in quantity,
+ * On conflict the modal is shown.
+ * Saving the old value when the edit button is clicked.
+ * @param item
+ * @param key
+ * @returns {Promise<void>}
+ **/
 const toggleEdit = async (item, key) => {
   if(item.editing) {
     if (oldValues[key] !== item.quantity) {
@@ -31,26 +38,57 @@ const toggleEdit = async (item, key) => {
 
   item.editing = !item.editing
 }
+
+/**
+ * Request update item then set last updated to the new value.
+ * @param item
+ * @param force
+ * @returns {Promise<void>}
+ */
 const update = async (item, force) => {
   const patched = await patchItem.patch(item, force)
 
   item.last_updated = patched.last_updated
 }
+
+/**
+ * Increase quantity.
+ * @param item
+ */
 const increase = (item) => {
   item.quantity++
 }
+
+/**
+ * Decrease quantity if it is not zero.
+ * @param item
+ */
 const decrease = (item) => {
   if(item.quantity > 0)
     item.quantity--
 }
+/**
+ * Close modal.
+ * @param item
+ */
 const closeModal = (item) => {
   item.showMessage = false
 }
+
+/**
+ * Force update item on conflict.
+ * @param item
+ * @returns {Promise<void>}
+ */
 const proceed = async (item) => {
   closeModal(item)
   await update(item, true)
 }
 
+/**
+ * Fetch items then update the last updated text on the UI.
+ * @returns {Promise<void>}
+ */
 const setItemsAfterFetch = async () => {
   await itemStore.fetchItems()
 
@@ -59,6 +97,7 @@ const setItemsAfterFetch = async () => {
   lastUpdated.value = Date.now()
 }
 
+//calling periodic fetch and update
 onMounted(async () => {
   await setItemsAfterFetch()
   setInterval(async ()=> {
