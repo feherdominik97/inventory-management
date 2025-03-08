@@ -15,7 +15,7 @@
 }
 
 body {
-    @apply font-inter bg-gray-200 text-gray-600
+    @apply font-inter bg-gray-200 text-gray-600 max-sm:text-sm
 }
 
 .title-container {
@@ -23,9 +23,9 @@ body {
 }
 
 .main-box-container {
-    @apply grid grid-cols-1 gap-4 place-items-center h-screen;
+    @apply grid grid-cols-1 gap-4 place-items-center h-screen m-4;
 }
 
 .content-container {
-    @apply flex justify-center p-6 bg-white shadow-lg rounded-lg
+    @apply flex justify-center sm:p-6 p-2 bg-white shadow-lg rounded-lg
 }

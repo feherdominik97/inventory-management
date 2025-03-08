@@ -55,6 +55,8 @@ const setItemsAfterFetch = async () => {
   await itemStore.fetchItems()
 
   items.value = itemStore.items
+
+  lastUpdated.value = Date.now()
 }
 
 onMounted(async () => {
@@ -77,9 +79,9 @@ onMounted(async () => {
               th Quantity
               th.last-updated
                 div
-                  span Updated:
+                  span.update-label Updated:
                   br
-                  NuxtTime(:datetime="lastUpdated" year="numeric" month="long" day="numeric" hour="numeric" minute="numeric" second="numeric" )
+                  NuxtTime(:datetime="lastUpdated" hour="numeric" minute="numeric" second="numeric" )
           tbody
             tr(v-for="(item, key) in items")
               td {{ item.name }}
@@ -112,33 +114,39 @@ onMounted(async () => {
   @apply rounded-2xl
 }
 .last-updated {
-  @apply p-6
+  @apply p-2
 }
 .last-updated > div{
-  @apply shadow-lg p-2 bg-gray-50 text-xs rounded-lg
+  @apply md:shadow-lg p-2 bg-gray-50 text-xs rounded-lg
 }
 img {
   @apply max-w-full object-contain
 }
 .img {
-  @apply max-w-64 h-32 overflow-hidden flex justify-center items-center border shadow-lg my-2
+  @apply md:max-w-64 md:h-32 overflow-hidden flex justify-center items-center border shadow-lg my-2
 }
 td, th{
-  @apply p-4 text-center border-b
+  @apply md:p-4 p-1 text-center border-b
 }
 .command, input {
   @apply border rounded-lg shadow-lg
 }
 .command {
-  @apply  hover:bg-gray-600 hover:text-gray-50
+  @apply hover:bg-gray-600 hover:text-gray-50
 }
 button {
-  @apply p-2
+  @apply md:p-2 p-1
 }
 .quantity {
   @apply w-full flex justify-center items-center
 }
+.update-label {
+  @apply max-sm:hidden
+}
+.update-label + br {
+  @apply max-sm:hidden
+}
 input {
-  @apply p-2 w-12
+  @apply md:p-2 p-1 w-12
 }
 </style>

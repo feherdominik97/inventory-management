@@ -46,7 +46,7 @@ Inventory manager with optimistic updates.
 - Instead of a modal maybe there could be just a force button at the end of the row. (?)
 - Tests.
 - Documentation.
-- Responsive UI.
+- Radio buttons to switch between list and card view for mobile (?)
 
 ### Tips:
 
